@@ -1,11 +1,11 @@
 # Epic Crates Of Mass Destruction 
-![Image](https://raw.githubusercontent.com/Team-ARG-Museum/ID-33-ECOMD/master/art/banner-ID-33.png)
+![Image](https://raw.githubusercontent.com/T-arg/ID-33-ECOMD/master/art/banner-ID-33.png)
 
 EPIC CRATES OF MASS DESTRUCTION :  
 
-**Download latest Arduboy version and source :** https://github.com/Team-ARG-Museum/ID-33-ECOMD/releases/latest  
+**Download latest Arduboy version and source :**
 
-MADE by TEAM a.r.g. : https://team-arg-museum.github.io/
+MADE by TEAM a.r.g. :
 
 2015 - DRAGULA96 - JO3RI  (Firepit animation by @JUSTIN_CYR)
 
