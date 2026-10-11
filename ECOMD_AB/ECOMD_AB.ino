@@ -1,9 +1,9 @@
 /*
- EPIC CRATES OF MASS DESTRUCTION : http://www.team-arg.org/ecomd-manual.html
+ EPIC CRATES OF MASS DESTRUCTION : https://t-arg.github.io/ID-33-ECOMD/
 
- Arduboy version 1.1:  http://www.team-arg.org/ecomd-downloads.html
+ Arduboy version 1.1:  https://github.com/T-arg/ID-33-ECOMD
 
- MADE by TEAM a.r.g. : http://www.team-arg.org/more-about.html
+ MADE by TEAM a.r.g. : https://t-arg.github.io/
 
  2015 - DRAGULA96 - JO3RI  (Firepit animation by @JUSTIN_CYR)
 

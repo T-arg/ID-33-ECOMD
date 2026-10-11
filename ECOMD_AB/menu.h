@@ -7,7 +7,7 @@
 void stateMenuIntro()
 {
   globalCounter++;
-  sprites.drawSelfMasked(34, 4, T_arg, 0);
+  sprites.drawSelfMasked(49, 20, T_arg, 0);
   if (globalCounter > 180)
   {
     globalCounter = 0;
@@ -18,9 +18,9 @@ void stateMenuIntro()
 void stateMenuMain()
 {
   arduboy.drawCompressed(0, 0, title_bitmap, WHITE);
-  sprites.drawSelfMasked(20, 56, mainmenu_is_mask, menuSelection - 2);
+  sprites.drawSelfMasked(32, 56, mainmenu_is_mask, menuSelection - 3);
   if (arduboy.justPressed(RIGHT_BUTTON) && (menuSelection < 5))menuSelection++;
-  if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 2))menuSelection--;
+  if (arduboy.justPressed(LEFT_BUTTON) && (menuSelection > 3))menuSelection--;
   if (arduboy.justPressed(A_BUTTON) || arduboy.justPressed(B_BUTTON)) gameState = menuSelection;
 }
 
