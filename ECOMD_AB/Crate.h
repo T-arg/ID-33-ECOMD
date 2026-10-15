@@ -11,50 +11,26 @@ PROGMEM const unsigned char crate_plus_mask[] = {
 };
 
 
+// the 8 places a crate can appear (x, y)
+const byte PROGMEM crateLoc[8][2] = { { 47, 7 }, { 74, 7 }, { 10, 23 }, { 39, 23 }, { 82, 23 }, { 110, 23 }, { 60, 39 }, { 10, 55 } };
+
 class Crate
 {
   public:
     byte weapon;
     byte x, y;
 
-    class Location {
-      public:
-        byte x, y;
-    };
-    Location location[11];
-
-    Crate()
-    {
-      setupLocations();
-      randomizeCrate();
-    }
-
-    void setupLocations() {
-      location[0].x = 47; location[0].y = 7;
-      location[1].x = 74; location[1].y = 7;
-      location[2].x = 10; location[2].y = 23;
-      location[3].x = 39; location[3].y = 23;
-      location[4].x = 82; location[4].y = 23;
-      location[5].x = 110; location[5].y = 23;
-      location[6].x = 60; location[6].y = 39;
-      location[7].x = 10; location[7].y = 55;
-      location[8].x = 41; location[8].y = 55;
-      location[9].x = 80; location[9].y = 55;
-      location[10].x = 110; location[10].y = 55;
-    }
     void randomizeCrate()
     {
-      int currentWeapon = weapon;
-      while (weapon == currentWeapon)
-      {
-        weapon = random(0, 6);
-      }
+      byte oldWeapon = weapon;
+      while (weapon == oldWeapon) weapon = random(0, 6);
       byte oldx = x;
       byte oldy = y;
       while (x == oldx && y == oldy)
       {
         byte pos = random(0, 8);
-        x = location[pos].x; y = location[pos].y;
+        x = pgm_read_byte(&crateLoc[pos][0]);
+        y = pgm_read_byte(&crateLoc[pos][1]);
       }
     }
 };
@@ -79,33 +55,9 @@ void checkCrateCollisions()
 
   if (arduboy.collide(playerRect, crateRect)) {
     scorePlayer += 100;
-    sound.tone(300, 100);
-    switch (crate.weapon) {
-      case 0:
-        CURRENT_WEAPON = DEFAULT_GUN;
-        weapon.weaponSet(0);
-        break;
-      case 1:
-        CURRENT_WEAPON = SHOTGUN;
-        weapon.weaponSet(1);
-        break;
-      case 2:
-        CURRENT_WEAPON = MAGNUM;
-        weapon.weaponSet(2);
-        break;
-      case 3:
-        CURRENT_WEAPON = MACHINEGUN;
-        weapon.weaponSet(3);
-        break;
-      case 4:
-        CURRENT_WEAPON = FLAMETHROWER;
-        weapon.weaponSet(4);
-        break;
-      case 5:
-        CURRENT_WEAPON = DUAL_PISTOLS;
-        weapon.weaponSet(5);
-        break;
-    }
+    sfx(SFX_CRATE);
+    CURRENT_WEAPON = (WEAPON_TYPE)crate.weapon;
+    weapon.weaponSet(crate.weapon);
     crate.randomizeCrate();
   }
 }

@@ -76,11 +76,14 @@ class Enemy
       {
         scorePlayer ++;
         reset();
+        sfx(SFX_KILL);
       }
+      else sfx(SFX_HIT);
     }
 
     void makeAgro() {
       if (!isAgro) {
+        sfx(SFX_AGRO);
         isAgro = true;
         frameDelay --;
       }

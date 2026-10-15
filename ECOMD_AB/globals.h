@@ -3,7 +3,8 @@
 
 #include <Arduino.h>
 #include <Arduboy2.h>
-#include <ArduboyTones.h>
+#include "ATMconfig.h"
+#include <ATMlib.h>
 #include "bitmaps.h"
 
 
@@ -14,16 +15,17 @@
 #define STATE_MENU_PLAY              3
 #define STATE_MENU_INFO              4
 #define STATE_MENU_SOUNDFX           5
+#define STATE_MENU_JBOX              6
 
 //define game states (on main menu)
-#define STATE_GAME_INIT_LEVEL        6
-#define STATE_GAME_PLAYING           7
-#define STATE_GAME_PAUSE             8
-#define STATE_GAME_OVER              9
+#define STATE_GAME_INIT_LEVEL        7
+#define STATE_GAME_PLAYING           8
+#define STATE_GAME_PAUSE             9
+#define STATE_GAME_OVER              10
 
 Arduboy2Base arduboy;
 Sprites sprites;
-ArduboyTones sound(arduboy.audio.enabled);
+ATMsynth ATM;
 
 //determines the state of the game
 byte gameState = STATE_MENU_INTRO;   // start the game with the TEAM a.r.g. logo
@@ -34,4 +36,9 @@ byte globalCounter = 0;
 byte walkingFrame;
 byte waitingFrame;
 int scorePlayer;
+
+#define INTRO_DIV 2
+#include "arduboy_intro.h"
+#include "music.h"
+
 #endif

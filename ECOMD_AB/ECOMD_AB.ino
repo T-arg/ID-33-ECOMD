@@ -35,6 +35,7 @@ const FunctionPointer PROGMEM mainGameLoop[] = {
   stateMenuPlay,
   stateMenuInfo,
   stateMenuSoundfx,
+  stateMenuJbox,
   stateGameInitLevel,
   stateGamePlaying,
   stateGamePause,
@@ -44,7 +45,8 @@ const FunctionPointer PROGMEM mainGameLoop[] = {
 
 void setup()
 {
-  arduboy.begin();
+  arduboy.boot();
+  arduboy.audio.begin();
   arduboy.setFrameRate(60);
   arduboy.initRandomSeed();
 }
@@ -53,6 +55,7 @@ void loop() {
   if (!(arduboy.nextFrame())) return;
   arduboy.pollButtons();
   arduboy.clear();
+  musicUpdate();
   ((FunctionPointer) pgm_read_word (&mainGameLoop[gameState]))();
   arduboy.display();
 }

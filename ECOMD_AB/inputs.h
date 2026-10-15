@@ -14,7 +14,7 @@ byte waitingTimer;
 
 void checkInputs()
 {
-  if (arduboy.justPressed(UP_BUTTON)) gameState = STATE_GAME_PAUSE;
+  if (arduboy.justPressed(UP_BUTTON)) { gameState = STATE_GAME_PAUSE; sfx(SFX_PAUSE); }
 
   if (arduboy.pressed(RIGHT_BUTTON))
   {
@@ -72,9 +72,9 @@ void checkInputs()
   if (arduboy.justPressed(B_BUTTON) && isGrounded)
   {
     if (player.y > 4) player.y --;
-    playerYVelocity = 7;
+    playerYVelocity = 4;       // the jump now rises 4,4,4,3,3,3,2,2,2,1,1,1 (see gravityEffect)
     isGrounded = false;
-    sound.tone(60, 100);
+    sfx(SFX_JUMP);
   }
 }
 

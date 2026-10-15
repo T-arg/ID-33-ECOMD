@@ -73,7 +73,7 @@ boolean checkIfGrounded()
 
 void gravityEffect()
 {
-  playerYVelocity -= gravity;
+  if (arduboy.everyXFrames(3)) playerYVelocity -= gravity;   // gravity works at a third of the speed: a slower, floatier jump
   if (playerYVelocity < -2) playerYVelocity = -2;
 
 

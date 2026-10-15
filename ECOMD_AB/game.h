@@ -4,6 +4,9 @@
 #include <Arduino.h>
 #include "globals.h"
 
+// x, y, width of the platforms
+const byte PROGMEM wallSpec[4][3] = { { 0, 31, 55 }, { 72, 31, 55 }, { 40, 15, 47 }, { 40, 47, 47 } };
+
 void stateGameInitLevel()
 {
   scorePlayer = 0;
@@ -36,29 +39,14 @@ void stateGameInitLevel()
   bottomHole.x = 56;
   bottomHole.y = 63;
 
-  //platform left
-  wall[0].x = 0;
-  wall[0].y =  31;
-  wall[0].width = 55;
-  wall[0].height = 2;
-
-  //platform right
-  wall[1].x = 72;
-  wall[1].y = 31;
-  wall[1].width = 55;
-  wall[1].height = 2;
-
-  //platform mid top
-  wall[2].x = 40;
-  wall[2].y = 15;
-  wall[2].width = 47;
-  wall[2].height = 2;
-
-  //platform mid bottom
-  wall[3].x = 40;
-  wall[3].y = 47;
-  wall[3].width = 47;
-  wall[3].height = 2;
+  // the four platforms: left, right, middle top, middle bottom
+  for (byte i = 0; i < 4; i++)
+  {
+    wall[i].x = pgm_read_byte(&wallSpec[i][0]);
+    wall[i].y = pgm_read_byte(&wallSpec[i][1]);
+    wall[i].width = pgm_read_byte(&wallSpec[i][2]);
+    wall[i].height = 2;
+  }
 
   walkingFrame = 0;
   waitingFrame = 0;
@@ -93,7 +81,7 @@ void stateGamePlaying()
 void stateGamePause()
 {
   arduboy.drawCompressed(0, 0, pause_bitmap, WHITE);
-  if (arduboy.justPressed(UP_BUTTON)) gameState = STATE_GAME_PLAYING;
+  if (arduboy.justPressed(UP_BUTTON)) { gameState = STATE_GAME_PLAYING; sfx(SFX_PAUSE); }
 };
 
 

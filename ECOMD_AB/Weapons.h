@@ -27,11 +27,21 @@ class Bullet
     }
 };
 
+// per weapon: frameDelay, maxFuse, maxCooldown, kickBack, width, height, xSpeed, xSpeedOffset, yOffset, ySpeedOffset, damage
+const byte PROGMEM weaponSpecs[6][11] = {
+  { 1, 30,  3, 0,  4, 2, 5, 0, 0, 0, 2 },   // DEFAULT_GUN: faster bullet, 2 damage
+  { 1, 16, 24, 6, 20, 8, 1, 0, 0, 0, 6 },   // SHOTGUN: wider blast, shorter wait
+  { 1, 35, 14, 3,  6, 3, 5, 0, 0, 0, 4 },   // MAGNUM: fast, hits hard
+  { 1, 30,  6, 2,  5, 3, 6, 0, 1, 0, 2 },   // MACHINEGUN: fast, little kickback
+  { 3,  8,  2, 0,  6, 6, 7, 2, 2, 2, 2 },   // FLAMETHROWER: three times as far, twice as many flames
+  { 1, 30,  5, 0,  4, 2, 5, 0, 0, 0, 2 },   // DUAL_PISTOLS: two bullets per shot
+};
+
 class Weapons
 {
   public:
 
-    static const byte maxBullets = 6;
+    static const byte maxBullets = 12;
     int powerupTimer = POWERUP_MAXTIME;
     byte maxFuse = 23;
     byte fuse = 0;
@@ -110,136 +120,33 @@ class Weapons
 
     }
 
-    void weaponSet(int weapType)
+    void weaponSet(byte weapType)
     {
+      const byte *p = weaponSpecs[weapType];
       powerupTimer = POWERUP_MAXTIME;
-        switch (weapType) {
-        case 0: //DEFAULT GUN
-          frameDelay = 1;
-          maxFuse = 30;
-          fuse = 0;
-          maxCooldown =  3;
-          kickBack = 0;
-          cooldown = 0;
-          width = 4;
-          height = 2;
-          xSpeed = 3;
-          xSpeedOffset = 0;
-          yOffset = 0;
-          ySpeed = 0;
-          ySpeedOffset = 0;
-          damage = 1;
-          break;
-        case 1: //SHOTGUN
-          frameDelay = 1;
-          maxFuse = 16;
-          fuse = 0;
-          maxCooldown =  40;
-          kickBack = 8;
-          cooldown = 0;
-          width = 16;
-          height = 8;
-          xSpeed = 1;
-          ySpeed = 0;
-          yOffset = 0;
-          ySpeedOffset = 0;
-          damage = 5;
-          break;
-        case 2: //MAGNUM
-          frameDelay = 1;
-          maxFuse = 35;
-          fuse = 0;
-          maxCooldown =  20;
-          kickBack = 4;
-          cooldown = 0;
-          width = 5;
-          height = 3;
-          xSpeed = 3;
-          xSpeedOffset = 0;
-          ySpeed = 0;
-          yOffset = 0;
-          ySpeedOffset = 0;
-          damage = 2;
-          break;
-        case 3: //MACHINE_GUN:
-          frameDelay = 1;
-          maxFuse = 30;
-          fuse = 0;
-          maxCooldown =  8;
-          kickBack = 5;
-          cooldown = 0;
-          width = 5;
-          height = 3;
-          xSpeed = 4;
-          xSpeedOffset = 0;
-          ySpeed = 0;
-          yOffset = 1;
-          ySpeedOffset = 0;
-          damage = 1;
-          break;
-        case 4: //FLAMETHROWER:
-          frameDelay = 3;
-          maxFuse = 6;
-          fuse = 0;
-          maxCooldown =  4;
-          cooldown = 0;
-          kickBack = 0;
-          width = 6;
-          height = 6;
-          xSpeed = 3;
-          xSpeedOffset = 2;
-          ySpeed = 0;
-          yOffset = 1;
-          ySpeedOffset = 1;
-          damage = 2;
-          break;
-        case 5: //DUAL_PISTOLS:
-          //SAME STATS AS DEFAULT_GUN
-          frameDelay = 1;
-          maxFuse = 30;
-          fuse = 0;
-          maxCooldown = 3;
-          kickBack = 0;
-          cooldown = 0;
-          width = 4;
-          height = 2;
-          xSpeed = 3;
-          xSpeedOffset = 0;
-          yOffset = 0;
-          ySpeed = 0;
-          ySpeedOffset = 0;
-          damage = 1;
-          break;
-      }
+      frameDelay = pgm_read_byte(p++);
+      maxFuse = pgm_read_byte(p++);
+      maxCooldown = pgm_read_byte(p++);
+      kickBack = pgm_read_byte(p++);
+      width = pgm_read_byte(p++);
+      height = pgm_read_byte(p++);
+      xSpeed = pgm_read_byte(p++);
+      xSpeedOffset = pgm_read_byte(p++);
+      yOffset = pgm_read_byte(p++);
+      ySpeedOffset = pgm_read_byte(p++);
+      damage = pgm_read_byte(p);
+      fuse = 0;
+      cooldown = 0;
+      ySpeed = 0;
       setBulletSpecs();
     }
 };
 
 Weapons weapon;
 
-void makeShootingSounds() //pew pew sound
+void makeShootingSounds() //pew pew sound: pistol, shotgun, magnum, machine gun, flamethrower; the dual pistols sound like the pistol
 {
-  switch (CURRENT_WEAPON)
-  {
-    case DEFAULT_GUN:
-      sound.tone(100, 100);
-      break;
-    case SHOTGUN:
-      sound.tone(140, 300);
-      break;
-    case MAGNUM:
-      sound.tone(190, 300);
-      break;
-    case MACHINEGUN:
-      sound.tone(120, 100);
-      break;
-    case FLAMETHROWER:
-      sound.tone(100, 80);
-      break;
-    case DUAL_PISTOLS:
-      sound.tone(100, 100);
-      break;
-  }
+  sfx(SFX_GUN + CURRENT_WEAPON % 5);
 }
 
 void shoot()
